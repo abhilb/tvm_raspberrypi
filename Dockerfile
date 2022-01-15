@@ -30,4 +30,16 @@ COPY ./config.cmake /tvm/build/
 
 RUN cmake .. && make -j 8
 
+RUN sudo apt-get install python3-pip build-essential python-dev
+
+RUN python3 -m pip install numpy
+
+WORKDIR /tvm/python
+
+RUN python3 gen_requirements.py
+
+RUN python3 -m pip install -r requirements/core.txt
+
+RUN python3 setup.py bdist_wheel
+
 ENTRYPOINT [ "/bin/bash" ]
