@@ -28,6 +28,6 @@ WORKDIR /tvm/build
 
 COPY ./config.cmake /tvm/build/
 
-RUN cmake .. && make -j 8 --debug=v
+RUN cmake .. && make -j 8
 
 ENTRYPOINT [ "/bin/bash" ]
