@@ -1,4 +1,4 @@
-FROM balenalib/raspberry-pi-debian:latest AS builder
+FROM balenalib/raspberry-pi4-64-debian:latest AS builder
 
 RUN apt-get update && apt-get install git \
     python3.8 \
