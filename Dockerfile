@@ -1,8 +1,8 @@
 FROM balenalib/raspberrypi4-64-debian
 
 RUN apt-get update && apt-get install git \
-    python3.8 \
-    python3.8-dev \
+    python3 \
+    python3-dev \
     python3-setuptools \
     gcc \
     libtinfo-dev \
