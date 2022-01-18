@@ -6,6 +6,9 @@ on:
       - 'v*'
     branches: [ main ]
 
+env:
+  TEST_TAG: user/tvm:test
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,13 +27,6 @@ jobs:
           sudo apt-get install -y binfmt-support
 
       -
-        name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-            username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -40,5 +36,33 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/tvm_raspberrypi:latest
+          load: true
+          tags: ${{ env.TEST_TAG }}
+
+      -
+        name: Copy artefacts
+        run: |
+          mkdir -p ./wheels
+          docker run --rm ${{ env.TEST_TAG  }} -v ./wheels:/wheels
+          zip ./wheels
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        with:
+          tag_name: ${{ github.ref  }}
+          release_name: Release ${{ github.ref  }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url  }}
+          asset_path: wheels.zip
+          asset_name: tvm_wheels
