@@ -42,4 +42,6 @@ RUN python3 -m pip install -r requirements/core.txt
 
 RUN python3 setup.py bdist_wheel
 
-ENTRYPOINT [ "/bin/bash" ]
+RUN mkdir -p /wheels
+
+CMD ["cp", "/tvm/python/dist/*.whl", "/wheels"]
