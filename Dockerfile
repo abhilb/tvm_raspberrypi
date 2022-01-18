@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install git \
     libedit-dev \
     libxml2-dev \
     cmake \
-    llvm-10 \
+    llvm-11 \
     libopenblas-dev \
-    llvm-10-dev \
-    libllvm10 \
-    llvm-10-runtime
+    llvm-11-dev \
+    libllvm11 \
+    llvm-11-runtime
 
 RUN git clone --recursive https://github.com/apache/tvm tvm
 
