@@ -44,4 +44,4 @@ RUN python3 setup.py bdist_wheel
 
 RUN mkdir -p /wheels
 
-CMD ["cp", "/tvm/python/dist/*.whl", "/wheels"]
+CMD ["cp", "-r", "/tvm/python/dist/", "/wheels"]
